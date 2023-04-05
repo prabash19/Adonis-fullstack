@@ -20,7 +20,10 @@
 
 import Route from "@ioc:Adonis/Core/Route";
 
-Route.resource("/user", "CustomersController").apiOnly();
+Route.post("/register", "AuthController.register");
+Route.post("/login", "AuthController.login");
 Route.post("/job", "JobsController.createJob");
 Route.get("/job", "JobsController.viewJobs");
+Route.get("/job/:location/:type", "JobsController.filterJobs");
 Route.post("/bid", "BidsController.createBid");
+Route.get("/bid/:id", "BidsController.fetchBids");

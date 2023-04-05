@@ -1,10 +1,9 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import Database from "@ioc:Adonis/Lucid/Database";
-
+import Job from "App/Models/Job";
 export default class JobsController {
   public async createJob({ request, response }: HttpContextContract) {
     response.status(201);
-    const data = await Database.table("jobs").insert(request.body());
+    const data = await Job.create(request.body());
     return {
       message: "success",
       data,
@@ -12,7 +11,23 @@ export default class JobsController {
   }
   public async viewJobs({ response }: HttpContextContract) {
     response.status(201);
-    const jobs = await Database.from("jobs").select("*");
+    const jobs = await Job.all();
+    return {
+      message: "success",
+      jobs,
+    };
+  }
+  public async filterJobs({ params, response }: HttpContextContract) {
+    const { location, type } = params;
+    let dataFromLocation, dataFromType;
+    if (location) {
+      dataFromLocation = await Job.query().where("location", location);
+    }
+    if (type) {
+      dataFromType = await Job.query().where("type", type);
+    }
+    response.status(201);
+    const jobs = { ...dataFromLocation, dataFromType };
     return {
       message: "success",
       jobs,
