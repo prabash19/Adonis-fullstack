@@ -1,4 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import Database from "@ioc:Adonis/Lucid/Database";
 
 export default class CustomersController {
   public async index() {
@@ -6,9 +7,10 @@ export default class CustomersController {
   }
   public async store({ request, response }: HttpContextContract) {
     response.status(201);
+    const data = await Database.table("customers").insert(request.body());
     return {
       message: "success",
-      body: request.body(),
+      data,
     };
   }
   public async update({ params, request, response }: HttpContextContract) {

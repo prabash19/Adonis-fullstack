@@ -21,4 +21,6 @@
 import Route from "@ioc:Adonis/Core/Route";
 
 Route.resource("/user", "CustomersController").apiOnly();
-Route.resource("/maker", "MakersController").apiOnly();
+Route.post("/job", "JobsController.createJob");
+Route.get("/job", "JobsController.viewJobs");
+Route.post("/bid", "BidsController.createBid");
